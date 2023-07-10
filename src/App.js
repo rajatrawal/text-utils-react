@@ -15,6 +15,7 @@ function App() {
   const [alert, setAlert] = useState(null);
   const [navColor, setNavColor] = useState('');
   const [textBoxColor, setTextBoxColor] = useState('');
+  const [myActive,setActive] = useState('homeActive');
 
   const showAlert = (strongText, text, type) => {
     setAlert(
@@ -29,18 +30,21 @@ function App() {
     let tinyColor = tinycolor(color);
     if (tinyColor.getBrightness() > 127.5) {
       setTheme('dark');
+
+      document.getElementById("checkbox").checked=true;
     }
     else {
-      setTheme('light')
+      setTheme('light');
+      document.getElementById("checkbox").checked=false;
     }
 
     setNavColor(tinyColor.darken(7).toString());
-    console.log('nav dd', navColor);
+
     setTextBoxColor(tinyColor.lighten(10).toString());
     document.body.style.backgroundColor = `${color}`;
     let currentTheme = theme === 'dark' ? 'light' : 'dark';
     document.body.setAttribute('data-bs-theme', currentTheme);
-    document.title = `Texty - ${currentTheme} mode`;
+    // document.title = `Texty - ${currentTheme} mode`;
 
 
   }
@@ -59,43 +63,35 @@ function App() {
     showAlert(currentTheme, 'mode has been set successfully!', 'success');
 
   }
-
+  
 
   return (
     <>
-    {/* <BrowserRouter>
-        <Navbar title="Texty" about="About us" theme={theme} changeTheme={changeTheme} changeColor={changeColor} navColor={navColor} />
-        <Alert alert={alert} />
-        <div className="container mt-4" >
-     
-            <Switch>
-              <Route path="/about">
-                <About />
-              </Route>
-              <Route path="/">
-                <TextForm heading="Welcome to Texty" showAlert={showAlert} textBoxColor={textBoxColor} />
-              </Route>
-            </Switch>
+      {/* <Navbar title="Texty" about="About us" theme={theme} changeTheme={changeTheme} changeColor={changeColor} navColor={navColor} />
+      <Alert alert={alert} />
+      <div className="container my-4" >
+        <TextForm heading="Welcome to Texty" showAlert={showAlert} textBoxColor={textBoxColor} />
+      </div> */}
+      <BrowserRouter>
+        <Navbar title="Texty" about="About us" theme={theme} changeTheme={changeTheme} changeColor={changeColor} navColor={navColor} active = {myActive} />
+        <div style={{height:'4rem'}}>
 
-        </div>
-        <BrowserRouter/> */}
-             <BrowserRouter>
-             <Navbar title="Texty" about="About us" theme={theme} changeTheme={changeTheme} changeColor={changeColor} navColor={navColor} />
         <Alert alert={alert} />
+        </div>
         <div className="container my-4" >
           <Routes>
-            <Route exact path="/about" element={<About />}></Route>
+            <Route exact path="/about" element={<About backgroundColor={textBoxColor}  setActive={setActive}/>} ></Route>
             <Route
               exact path="/"
               element={
-                <TextForm heading="Welcome to Texty" showAlert={showAlert} textBoxColor={textBoxColor} />
+                <TextForm heading="Welcome to Texty" showAlert={showAlert} textBoxColor={textBoxColor} setActive={setActive}/>
               }
             ></Route>
           </Routes>
         </div>
       </BrowserRouter>
     </>
-      )
+  )
 }
 
-      export default App;
+export default App;
